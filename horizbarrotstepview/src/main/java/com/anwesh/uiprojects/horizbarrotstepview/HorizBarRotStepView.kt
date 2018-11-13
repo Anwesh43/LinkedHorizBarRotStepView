@@ -50,7 +50,7 @@ fun Canvas.drawHBRSNode(i : Int, scale : Float, paint : Paint) {
         paint.style = Paint.Style.STROKE
         drawRect(0f, 0f, wr, wr, paint)
         paint.style = Paint.Style.FILL
-        drawRect(0f, 0f, wr * sc, wr * sc, paint)
+        drawRect(RectF(0f, 0f, wr * sc, wr * sc), paint)
         restore()
     }
     restore()
@@ -216,6 +216,14 @@ class HorizBarRotStepView(ctx : Context) : View(ctx) {
             hrbs.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : HorizBarRotStepView {
+            val view : HorizBarRotStepView = HorizBarRotStepView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
