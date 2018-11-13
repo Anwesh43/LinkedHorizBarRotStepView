@@ -193,4 +193,27 @@ class HorizBarRotStepView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : HorizBarRotStepView) {
+
+        private val animator : Animator = Animator(view)
+
+        private val hrbs : HorizBarRotStep = HorizBarRotStep(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            hrbs.draw(canvas, paint)
+            animator.animate {
+                hrbs.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            hrbs.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
