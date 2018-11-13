@@ -19,7 +19,8 @@ val rects : Int = 3
 val PARTS : Int = 2
 val SC_GAP : Float = 0.1f / PARTS
 val SIZE_FACTOR : Int = 3
-val STROKE_FACTOR : Int = 60
+val STROKE_FACTOR : Int = 90
+val DELAY : Long = 25
 
 fun Int.getInverse() : Float = 1f / this
 
@@ -36,7 +37,7 @@ fun Canvas.drawHBRSNode(i : Int, scale : Float, paint : Paint) {
     val size : Float = gap / SIZE_FACTOR
     val sc1 : Float = scale.divideScale(0, 2)
     val sc2 : Float = scale.divideScale(1, 2)
-    paint.strokeWidth = Math.min(w, h) / 60
+    paint.strokeWidth = Math.min(w, h) / STROKE_FACTOR
     paint.strokeCap = Paint.Cap.ROUND
     paint.color = Color.parseColor("#4527A0")
     save()
@@ -46,7 +47,7 @@ fun Canvas.drawHBRSNode(i : Int, scale : Float, paint : Paint) {
         val wr : Float = 2 * size / rects
         val sc : Float = sc1.divideScale(j, rects)
         save()
-        translate(-size, -wr/2)
+        translate(-size + j * wr, -wr/2)
         paint.style = Paint.Style.STROKE
         drawRect(0f, 0f, wr, wr, paint)
         paint.style = Paint.Style.FILL
@@ -103,7 +104,7 @@ class HorizBarRotStepView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(DELAY)
                     view.invalidate()
                 } catch(ex : Exception) {
 
