@@ -29,6 +29,33 @@ fun Float.getScaleFactor() : Float = Math.floor(this / PARTS.getInverse().toDoub
 
 fun Float.updateScale(dir : Float) : Float = SC_GAP * dir * ((1 - getScaleFactor()) * rects.getInverse() + getScaleFactor())
 
+fun Canvas.drawHBRSNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = w / (nodes + 1)
+    val size : Float = gap / SIZE_FACTOR
+    val sc1 : Float = scale.divideScale(0, 2)
+    val sc2 : Float = scale.divideScale(1, 2)
+    paint.strokeWidth = Math.min(w, h) / 60
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.color = Color.parseColor("#4527A0")
+    save()
+    translate(gap * (i + 1), h/2)
+    rotate(90f * sc2)
+    for (j in 0..(rects - 1)) {
+        val wr : Float = 2 * size / rects
+        val sc : Float = sc1.divideScale(j, rects)
+        save()
+        translate(-size, -wr/2)
+        paint.style = Paint.Style.STROKE
+        drawRect(0f, 0f, wr, wr, paint)
+        paint.style = Paint.Style.FILL
+        drawRect(0f, 0f, wr * sc, wr * sc, paint)
+        restore()
+    }
+    restore()
+}
+
 class HorizBarRotStepView(ctx : Context) : View(ctx) {
 
     private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
